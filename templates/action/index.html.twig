@@ -1,9 +1,12 @@
 {% extends 'base.html.twig' %}
 {% block body %}
 <h1 class="text-center mt-3" >All Our Events 🎟</h1>
-<div class="container row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
+<div class="container px-4 mt-5 ">
+<div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
 {%for event in events%}
-<div class=" col card mt-2 mx-3">
+<div class="col mt-2 ">
+<div class="card">
+  <img src="{{asset('pictures/' ~  event.image)}}" class="card-img-top img-fluid" alt="...">
   <div class="card-body">
     <h5 class="card-title text-danger">{{event.title}}</h5>
     <p class="card-text">Type: {{event.type}}</p>
@@ -13,8 +16,10 @@
     <a href="/delete/{{event.id}}" class="btn btn-danger">Delete</a>
 
   </div>
+  </div>
 </div>
 
 {% endfor %}
+</div>
 </div>
 {% endblock %}
