@@ -63,13 +63,11 @@ class ActionController extends AbstractController
      * @Route("/delete/{id}", name="delete")
      */
     public function delete($id, ManagerRegistry $doctrine): Response
-    {      $em = $doctrine->getManager();
+    {     $em = $doctrine->getManager();
         $event = $doctrine->getRepository(Name::class)->find($id);
         $em->remove($event);
         $em->flush();
-        return $this->redirectToRoute('action/index.html.twig', [
-            
-        ]);
+        return $this->redirectToRoute("index");
     }
 
     /**
