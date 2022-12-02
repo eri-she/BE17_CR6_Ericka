@@ -29,18 +29,18 @@ class ActionController extends AbstractController
     }
  
       /**
-     * @Route("/edit", name="edit")
+     * @Route("/edit/{id}", name="edit")
      */
-    public function edit(): Response
+    public function edit($id): Response
     {
         return $this->render('action/edit.html.twig', [
             'controller_name' => 'ActionController',
         ]);
     } 
       /**
-     * @Route("/delete", name="delete")
+     * @Route("/delete/{id}", name="delete")
      */
-    public function delete(): Response
+    public function delete($id): Response
     {
         return $this->render('action/delete.html.twig', [
             'controller_name' => 'ActionController',
@@ -48,9 +48,9 @@ class ActionController extends AbstractController
     }
 
     /**
-     * @Route("/details", name="details")
+     * @Route("/details/{id}", name="details")
      */
-    public function details(): Response
+    public function details($id): Response
     {
         return $this->render('action/details.html.twig', [
             'controller_name' => 'ActionController',
