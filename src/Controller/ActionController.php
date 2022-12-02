@@ -9,6 +9,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Name;
 use App\Form\TaskType;
 use Symfony\Component\HttpFoundation\Request;
+// pic
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\String\Slugger\SluggerInterface;
+
 
 class ActionController extends AbstractController
 {
@@ -26,7 +31,7 @@ class ActionController extends AbstractController
     /**
      * @Route("/create", name="create")
      */
-    public function create(Request $request, ManagerRegistry $doctrine): Response
+    public function create(Request $request, ManagerRegistry $doctrine, SluggerInterface $slugger): Response
     {   $todo = new Name();
        $form = $this->createForm(TaskType::class, $todo);
 
@@ -36,7 +41,23 @@ class ActionController extends AbstractController
             // $form->getData() holds the submitted values
             // but, the original `$task` variable has also been updated
             $todo = $form->getData();
-            
+            $picture = $form->get('image')->getData();
+
+            if ($picture) {
+                $originalFilename = pathinfo($picture->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$picture->guessExtension();
+                try {
+                    $picture->move(
+                        $this->getParameter('picture_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+
+                $todo->setImage($newFilename);
+            }
 
             $em = $doctrine->getManager();
 
@@ -53,7 +74,7 @@ class ActionController extends AbstractController
       /**
      * @Route("/edit/{id}", name="edit")
      */
-    public function edit($id, Request $request, ManagerRegistry $doctrine): Response
+    public function edit($id, Request $request, ManagerRegistry $doctrine,SluggerInterface $slugger): Response
     {
        $todo = $doctrine->getRepository(Name::class)->find($id);
        $form = $this->createForm(TaskType::class, $todo);
@@ -64,6 +85,23 @@ class ActionController extends AbstractController
             
             
             $em = $doctrine->getManager();
+              $picture = $form->get('image')->getData();
+
+            if ($picture) {
+                $originalFilename = pathinfo($picture->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$picture->guessExtension();
+                try {
+                    $picture->move(
+                        $this->getParameter('picture_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+
+                $todo->setImage($newFilename);
+            }
 
             $em->persist($todo);
             $em->flush();
