@@ -88,11 +88,14 @@ class ActionController extends AbstractController
     /**
      * @Route("/details/{id}", name="details")
      */
-    public function details($id): Response
+    public function details($id,ManagerRegistry $doctrine): Response
     {
-       
+       $event = $doctrine->getRepository(Name::class)->find($id);
+
         return $this->render('action/details.html.twig', [
-            'controller_name' => 'ActionController',
+            
+          "event" => $event
         ]);
+       
     }
 }
