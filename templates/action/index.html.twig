@@ -1,7 +1,24 @@
 {% extends 'base.html.twig' %}
-
-
-
 {% block body %}
-index
+<h1 class="text-center mt-3" >All Our Events 🎟</h1>
+<div class="container mt-3">
+<div class="row">
+{%for event in events%}
+<div calls="col-md-3">
+<div class="card" style="width: 18rem;">
+  <img src="..." class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">{{event.title}}</h5>
+    <p class="card-text"></p>
+    <a href="/details{{event.id}}" class="btn btn-dark">View</a>
+    <a href="/edit{{event.id}}" class="btn btn-primary">Edit</a>
+    <a href="/delete{{event.id}}" class="btn btn-danger">Delete</a>
+
+
+  </div>
+</div>
+</div>
+{% endfor %}
+</div>
+</div>
 {% endblock %}
