@@ -7,7 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Name;
-use Symfony\Bridge\Doctrine\ManagerRegistry as DoctrineManagerRegistry;
+use App\Form\TaskType;
+use Symfony\Component\HttpFoundation\Request;
 
 class ActionController extends AbstractController
 {
@@ -25,10 +26,27 @@ class ActionController extends AbstractController
     /**
      * @Route("/create", name="create")
      */
-    public function create(): Response
-    {
+    public function create(Request $request, ManagerRegistry $doctrine): Response
+    {   $todo = new Name();
+       $form = $this->createForm(TaskType::class, $todo);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // $form->getData() holds the submitted values
+            // but, the original `$task` variable has also been updated
+            $todo = $form->getData();
+            
+
+            $em = $doctrine->getManager();
+
+            $em->persist($todo);
+            $em->flush();
+
+            return $this->redirectToRoute('index');
+        }
         return $this->render('action/create.html.twig', [
-            'controller_name' => 'ActionController',
+             "form" => $form->createView()
         ]);
     }
  
@@ -49,7 +67,7 @@ class ActionController extends AbstractController
         $event = $doctrine->getRepository(Name::class)->find($id);
         $em->remove($event);
         $em->flush();
-        return $this->redirectToRoute('index', [
+        return $this->redirectToRoute('action/index.html.twig', [
             
         ]);
     }
