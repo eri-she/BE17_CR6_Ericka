@@ -16,14 +16,14 @@ class TaskType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, ["attr"=>["placeholder"=>"Event Title", "class"=>"form-control mb-2"]])
-            ->add('date', DateType::class,["attr"=>["class"=>" mb-2"]])
+            ->add('date', DateType::class,["attr"=>["class"=>"form-control mb-2"]])
             ->add('type', ChoiceType::class, [
     'choices'  => [
         'Musical' => "musical",
         'Opera' => "opera",
         'Ballet' => "ballet",
     ],"attr"=> ["class"=>"form-check"]])
-            ->add('save', SubmitType::class, ["attr"=>["class"=>"btn btn-primary mt-2 mb-5"]])
+            ->add('save', SubmitType::class, ["attr"=>["class"=>"btn btn-primary mt-2 mb-2"]])
         ;
     }
      public function configureOptions(OptionsResolver $resolver): void
