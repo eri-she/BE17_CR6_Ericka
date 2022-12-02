@@ -53,10 +53,25 @@ class ActionController extends AbstractController
       /**
      * @Route("/edit/{id}", name="edit")
      */
-    public function edit($id): Response
+    public function edit($id, Request $request, ManagerRegistry $doctrine): Response
     {
+       $todo = $doctrine->getRepository(Name::class)->find($id);
+       $form = $this->createForm(TaskType::class, $todo);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            
+            $em = $doctrine->getManager();
+
+            $em->persist($todo);
+            $em->flush();
+
+            return $this->redirectToRoute('index');
+        }
         return $this->render('action/edit.html.twig', [
-            'controller_name' => 'ActionController',
+            "form" => $form->createView()
         ]);
     } 
       /**

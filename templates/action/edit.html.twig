@@ -1,6 +1,9 @@
 {% extends 'base.html.twig' %}
-
-
 {% block body %}
-edit
+<div class="container card mt-5" style="width:50rem;">
+<h2 class="mt-5">Edit Event</h2>
+   {{form_start(form)}}
+   {{form_widget(form)}}
+   {{form_end(form)}}
+   </div>
 {% endblock %}
