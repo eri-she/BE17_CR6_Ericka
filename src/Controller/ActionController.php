@@ -7,6 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Name;
+use Symfony\Bridge\Doctrine\ManagerRegistry as DoctrineManagerRegistry;
+
 class ActionController extends AbstractController
 {
     /**
@@ -42,10 +44,13 @@ class ActionController extends AbstractController
       /**
      * @Route("/delete/{id}", name="delete")
      */
-    public function delete($id): Response
-    {
-        return $this->render('action/delete.html.twig', [
-            'controller_name' => 'ActionController',
+    public function delete($id, ManagerRegistry $doctrine): Response
+    {      $em = $doctrine->getManager();
+        $event = $doctrine->getRepository(Name::class)->find($id);
+        $em->remove($event);
+        $em->flush();
+        return $this->redirectToRoute('index', [
+            
         ]);
     }
 
@@ -54,6 +59,7 @@ class ActionController extends AbstractController
      */
     public function details($id): Response
     {
+       
         return $this->render('action/details.html.twig', [
             'controller_name' => 'ActionController',
         ]);

@@ -4,15 +4,16 @@
 <div class="container mt-3">
 <div class="row">
 {%for event in events%}
-<div calls="col-md-3">
+<div calls="col-md">
 <div class="card" style="width: 18rem;">
   <img src="..." class="card-img-top" alt="...">
   <div class="card-body">
-    <h5 class="card-title">{{event.title}}</h5>
-    <p class="card-text"></p>
-    <a href="/details{{event.id}}" class="btn btn-dark">View</a>
-    <a href="/edit{{event.id}}" class="btn btn-primary">Edit</a>
-    <a href="/delete{{event.id}}" class="btn btn-danger">Delete</a>
+    <h5 class="card-title text-danger">{{event.title}}</h5>
+    <p class="card-text">Type: {{event.type}}</p>
+      <p class="card-text"> Date:{{event.date | date("d M.Y")}}</p>
+    <a href="/details/{{event.id}}" class="btn btn-dark">View</a>
+    <a href="/edit/{{event.id}}" class="btn btn-primary">Edit</a>
+    <a href="/delete/{{event.id}}" class="btn btn-danger">Delete</a>
 
 
   </div>
